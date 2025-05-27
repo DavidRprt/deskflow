@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-select": "^2.2.5",
     "@tabler/icons-react": "^3.33.0",
     "clsx": "^2.1.1",
-    "motion": "^12.12.2",
+    "lucide-react": "^0.511.0",
+    "motion": "^12.14.0",
     "next": "15.1.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

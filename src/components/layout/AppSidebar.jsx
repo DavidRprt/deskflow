@@ -58,7 +58,7 @@ export default function AppSidebar() {
               />
               <SidebarLink
                 link={{
-                  href: "/clients",
+                  href: "/clientes",
                   label: "Clientes",
                   icon: (
                     <IconUsersGroup
