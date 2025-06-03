@@ -19,8 +19,7 @@ import {
 
 export default function AppSidebar() {
   const user = {
-    name: "Manu Arora",
-    avatar: "https://assets.aceternity.com/manu.png",
+    name: "David Rapoport",
   }
 
   const [isDark, setIsDark] = useState(false)
@@ -103,7 +102,7 @@ export default function AppSidebar() {
                 label: user.name,
                 icon: (
                   <img
-                    src={user.avatar}
+                    src="/perfil.jpeg"
                     className="h-7 w-7 rounded-full"
                     alt="Avatar"
                   />
