@@ -20,32 +20,30 @@ export default function NewClientForm({ onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
-      <div className="bg-white dark:bg-neutral-950 rounded-2xl shadow-xl w-full max-w-lg p-6 relative border border-neutral-200 dark:border-neutral-800">
+      <div className="bg-card text-foreground rounded-2xl shadow-xl w-full max-w-lg p-6 relative border border-border">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white transition"
+          className="absolute top-4 right-4 text-muted hover:text-heading transition"
         >
           <IconX size={20} />
         </button>
 
-        <h2 className="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-4">
+        <h2 className="text-lg font-semibold text-heading mb-4">
           Nuevo Cliente
         </h2>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
           <LabelInputContainer>
-            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-              Nombre
-            </span>
+            <span className="text-sm font-medium text-heading">Nombre</span>
             <Input id="name" name="name" placeholder="Cliente" required />
           </LabelInputContainer>
 
           <LabelInputContainer>
-            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            <span className="text-sm font-medium text-heading">
               Tipo de cliente
             </span>
             <Select>
-              <SelectTrigger className="w-full data-[placeholder]:text-muted-foreground dark:data-[placeholder]:text-neutral-500">
+              <SelectTrigger className="w-full data-[placeholder]:text-muted">
                 <SelectValue placeholder="Seleccionar tipo" />
               </SelectTrigger>
               <SelectContent>
@@ -58,9 +56,7 @@ export default function NewClientForm({ onClose }) {
           </LabelInputContainer>
 
           <LabelInputContainer>
-            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-              Email
-            </span>
+            <span className="text-sm font-medium text-heading">Email</span>
             <Input
               id="email"
               name="email"
@@ -72,7 +68,7 @@ export default function NewClientForm({ onClose }) {
           <div className="flex justify-end pt-2">
             <button
               type="submit"
-              className="px-4 py-2 bg-indigo-700 dark:bg-indigo-400 text-white dark:text-indigo-950 text-sm font-medium rounded-md hover:bg-indigo-600 dark:hover:bg-indigo-300 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-neutral-950"
+              className="px-4 py-2 bg-primary text-primary-foreground text-sm font-medium rounded-md hover:opacity-90 transition focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 focus:ring-offset-background"
             >
               Guardar
             </button>

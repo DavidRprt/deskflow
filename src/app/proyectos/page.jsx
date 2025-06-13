@@ -5,6 +5,10 @@ import { projects as rawProjects } from "@/data/projects"
 import ProjectCard from "@/components/projects/ProjectCard"
 import SearchBar from "@/components/layout/SearchBar"
 import ProjectTimingFilter from "@/components/projects/ProjectTimingFilter"
+import { HiFolderAdd } from "react-icons/hi"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+
 
 function calculateProgress(tasks) {
   const total = tasks.reduce((acc, t) => acc + t.importance, 0)
@@ -33,6 +37,7 @@ function evaluateTiming(tasks) {
 export default function ProjectsPage() {
   const [timingFilter, setTimingFilter] = useState(null)
   const [searchText, setSearchText] = useState("")
+  const router = useRouter()
 
   const projects = rawProjects.map((project) => ({
     ...project,
@@ -50,22 +55,21 @@ export default function ProjectsPage() {
   })
 
   return (
-    <div className="min-h-screen bg-white dark:bg-indigo-950 px-6 py-8">
-      <h1 className="text-4xl font-semibold text-indigo-800 dark:text-indigo-100 mb-6">
-        Proyectos
-      </h1>
-
+    <div className="min-h-screen bg-background px-6 py-8">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-4xl font-semibold text-heading mb-2">Proyectos</h1>
+        <Button onClick={() => router.push("/proyectos/nuevo")}>
+          <HiFolderAdd size={16} />
+          Nuevo proyecto
+        </Button>
+      </div>
       <div className="flex flex-wrap items-center gap-3 mb-6">
-        <SearchBar
-          searchText={searchText}
-          setSearchText={setSearchText}
-        />
+        <SearchBar searchText={searchText} setSearchText={setSearchText} />
         <ProjectTimingFilter
           timingFilter={timingFilter}
           setTimingFilter={setTimingFilter}
         />
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredProjects.map((project) => (
           <ProjectCard key={project.id} {...project} />

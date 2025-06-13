@@ -46,31 +46,31 @@ export default function ClientCard({ active, setActive }) {
         <motion.div
           layoutId={`card-${active.name}-${id}`}
           ref={ref}
-          className="w-full max-w-md h-fit flex flex-col bg-white dark:bg-neutral-950 sm:rounded-3xl overflow-hidden shadow-xl border border-neutral-200 dark:border-neutral-800"
+          className="w-full max-w-md h-fit flex flex-col bg-card text-foreground sm:rounded-3xl overflow-hidden shadow-xl border border-border"
         >
           <div className="relative p-6">
             <button
               onClick={() => setActive(null)}
-              className="absolute top-4 right-4 text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white transition"
+              className="absolute top-4 right-4 text-muted hover:text-heading transition"
             >
               <IconX size={20} />
             </button>
 
             <div className="flex items-center gap-4 mb-6">
-              <div className="h-14 w-14 rounded-full bg-indigo-200 dark:bg-indigo-600 flex items-center justify-center text-white text-lg font-bold">
+              <div className="h-14 w-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-lg font-bold">
                 {active.name[0]}
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-100">
+                <h3 className="text-xl font-semibold text-heading">
                   {active.name}
                 </h3>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                <p className="text-sm text-muted">
                   {active.projects} proyectos activos
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 text-sm text-neutral-700 dark:text-neutral-300">
+            <div className="grid grid-cols-1 gap-4 text-sm text-subtle">
               <div className="flex items-center gap-2">
                 <IconBriefcase size={16} />
                 <span>{active.type || "Empresa"}</span>
@@ -102,14 +102,14 @@ export default function ClientCard({ active, setActive }) {
             </div>
 
             <div className="mt-6">
-              <div className="text-xs font-medium text-indigo-700 dark:text-indigo-300 flex items-center justify-between mb-1">
+              <div className="text-xs font-medium text-primary flex items-center justify-between mb-1">
                 <span>Relación general</span>
                 <span>{active.progress || 0}%</span>
               </div>
-              <div className="w-full h-2 bg-indigo-200 dark:bg-indigo-800 rounded-sm overflow-hidden">
+              <div className="w-full h-2 bg-muted rounded-sm overflow-hidden">
                 <div
                   style={{ width: `${active.progress || 0}%` }}
-                  className="h-full bg-indigo-600 dark:bg-indigo-400 transition-all"
+                  className="h-full bg-primary transition-all"
                 />
               </div>
             </div>
@@ -117,7 +117,7 @@ export default function ClientCard({ active, setActive }) {
             <div className="pt-6">
               <button
                 onClick={() => router.push(`/clientes/${active.id}`)}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-indigo-700 dark:bg-indigo-400 text-white dark:text-indigo-950 text-sm font-medium shadow hover:opacity-90 transition"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium shadow hover:opacity-90 transition"
               >
                 <IconArrowRight size={16} />
                 Ver perfil completo

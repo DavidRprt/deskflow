@@ -34,14 +34,12 @@ export default function AppSidebar() {
   }, [isDark])
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background text-foreground">
       <Sidebar>
-        <SidebarBody className="justify-between gap-10 bg-white dark:bg-indigo-950 text-neutral-900 dark:text-neutral-100 border-r border-indigo-200 dark:border-indigo-800">
+        <SidebarBody className="justify-between gap-10 bg-background text-foreground border-r border-border">
           <div className="flex flex-col overflow-y-auto">
-            {/* Top section */}
             <TopBar isDark={isDark} setIsDark={setIsDark} />
 
-            {/* Links */}
             <div className="mt-8 flex flex-col gap-2 px-2">
               <SidebarLink
                 link={{
@@ -50,7 +48,7 @@ export default function AppSidebar() {
                   icon: (
                     <IconFolder
                       size={18}
-                      className="text-indigo-600 dark:text-indigo-300"
+                      className="text-primary dark:text-primary"
                     />
                   ),
                 }}
@@ -62,7 +60,7 @@ export default function AppSidebar() {
                   icon: (
                     <IconUsersGroup
                       size={18}
-                      className="text-indigo-600 dark:text-indigo-300"
+                      className="text-primary dark:text-primary"
                     />
                   ),
                 }}
@@ -74,7 +72,7 @@ export default function AppSidebar() {
                   icon: (
                     <IconCurrencyDollar
                       size={18}
-                      className="text-indigo-600 dark:text-indigo-300"
+                      className="text-primary dark:text-primary"
                     />
                   ),
                 }}
@@ -86,7 +84,7 @@ export default function AppSidebar() {
                   icon: (
                     <IconSettings
                       size={18}
-                      className="text-indigo-600 dark:text-indigo-300"
+                      className="text-primary dark:text-primary"
                     />
                   ),
                 }}
@@ -94,7 +92,6 @@ export default function AppSidebar() {
             </div>
           </div>
 
-          {/* Bottom: Avatar + Logout */}
           <div className="flex flex-col gap-2 px-2 pb-4">
             <SidebarLink
               link={{
@@ -116,7 +113,7 @@ export default function AppSidebar() {
                 icon: (
                   <IconLogout
                     size={18}
-                    className="text-indigo-600 dark:text-indigo-300"
+                    className="text-primary dark:text-primary"
                   />
                 ),
               }}
@@ -133,23 +130,19 @@ function TopBar({ isDark, setIsDark }) {
 
   return (
     <div className="flex items-center justify-between px-2 pt-2">
-      {/* Logo o avatar */}
       <a href="/" className="flex items-center space-x-2">
-        <div className="h-8 w-8 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-indigo-600 dark:bg-white flex items-center justify-center">
+        <div className="h-8 w-8 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-primary text-primary-foreground flex items-center justify-center">
           <img src="/icon.png" alt="Logo" className="h-4 w-4 object-contain" />
         </div>
         {open && (
-          <span className="text-sm font-medium text-indigo-700 dark:text-white">
-            DeskFlow
-          </span>
+          <span className="text-sm font-medium text-heading">DeskFlow</span>
         )}
       </a>
 
-      {/* Toggle dark mode */}
       {open && (
         <button
           onClick={() => setIsDark(!isDark)}
-          className="flex items-center justify-center w-9 h-9 rounded-full border border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300 hover:opacity-80 transition"
+          className="flex items-center justify-center w-9 h-9 rounded-full border border-border text-primary hover:opacity-80 transition"
           title={isDark ? "Modo claro" : "Modo oscuro"}
         >
           {isDark ? <IconSun size={18} /> : <IconMoon size={18} />}
