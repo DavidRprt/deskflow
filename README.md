@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🧠 DeskFlow
 
-## Getting Started
+**DeskFlow** es una plataforma digital todo-en-uno para freelancers. Organiza tareas, proyectos y finanzas personales y profesionales desde una interfaz simple, ágil y completamente pensada para el trabajo independiente.
 
-First, run the development server:
+## 🚀 ¿Qué es DeskFlow?
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+DeskFlow es una herramienta diseñada para profesionales freelance que necesitan una solución clara y funcional para gestionar su tiempo, sus ingresos y sus compromisos con múltiples clientes.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+👉 El objetivo es **aumentar la autonomía y eficiencia operativa y financiera** de quienes trabajan por cuenta propia, especialmente en contextos económicos inestables.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🎯 Público objetivo
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Freelancers de habla hispana (diseñadores, programadores, redactores, marketers, etc.)
+- Profesionales que trabajan en modalidad remota
+- Usuarios que gestionan múltiples clientes y proyectos simultáneos
 
-## Learn More
+## 🛠️ Funcionalidades principales
 
-To learn more about Next.js, take a look at the following resources:
+- ✔️ Gestión de tareas con prioridades, deadlines y timer de trabajo
+- 📁 Organización por proyectos, clientes y categorías
+- 💰 Control financiero: ingresos, gastos, balance y reportes
+- 🧾 Presupuestos automatizados
+- 📊 Panel de métricas personalizadas
+- 🌙 Modos visuales y temas configurables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧪 Estado del proyecto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+DeskFlow se encuentra en etapa de desarrollo activo. Se lanzará una **versión gratuita inicial para Argentina** durante el año 2025, con vistas a expandirse luego a otros mercados hispanohablantes.
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
