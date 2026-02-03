@@ -1,6 +1,20 @@
 import { DataTypes } from "sequelize"
 import sequelize from "@/lib/db"
 
+/**
+ * Modelo Proyecto
+ *
+ * Representa los proyectos de trabajo del freelancer. Cada proyecto está
+ * asociado a un cliente y contiene información de presupuesto, gastos,
+ * fechas y estado.
+ *
+ * Relaciones:
+ * - Un Proyecto pertenece a una Persona (belongsTo) - el freelancer dueño
+ * - Un Proyecto pertenece a un Cliente (belongsTo)
+ * - Un Proyecto pertenece a un TipoProyecto (belongsTo)
+ * - Un Proyecto pertenece a un Estado (belongsTo)
+ * - Un Proyecto puede tener muchas Tareas (hasMany)
+ */
 const Proyecto = sequelize.define(
   "Proyecto",
   {

@@ -1,6 +1,21 @@
 import { DataTypes } from "sequelize"
 import sequelize from "@/lib/db"
 
+/**
+ * Modelo Persona
+ *
+ * Representa los datos personales y preferencias del usuario.
+ * Está separado de Usuario para mantener la autenticación desacoplada
+ * de los datos de perfil.
+ *
+ * Relaciones:
+ * - Una Persona tiene un Usuario (hasOne)
+ * - Una Persona pertenece a una Profesion (belongsTo)
+ * - Una Persona pertenece a un TemaVisual preferido (belongsTo)
+ * - Una Persona puede tener muchos TemasVisuales comprados (belongsToMany via persona_tema_visual)
+ * - Una Persona puede tener muchos Clientes (hasMany)
+ * - Una Persona puede tener muchos Proyectos (hasMany)
+ */
 const Persona = sequelize.define(
   "Persona",
   {

@@ -1,6 +1,16 @@
 import { DataTypes } from "sequelize"
 import sequelize from "@/lib/db"
 
+/**
+ * Modelo Tarea
+ *
+ * Representa las tareas individuales dentro de un proyecto.
+ * Cada tarea tiene una importancia (1-5), duración estimada y fechas.
+ *
+ * Relaciones:
+ * - Una Tarea pertenece a un Proyecto (belongsTo)
+ * - Una Tarea pertenece a un Estado (belongsTo)
+ */
 const Tarea = sequelize.define(
   "Tarea",
   {

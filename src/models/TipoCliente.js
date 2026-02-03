@@ -1,8 +1,17 @@
 import { DataTypes } from "sequelize"
 import sequelize from "@/lib/db"
 
-const Tarea = sequelize.define(
-  "Tarea",
+/**
+ * Modelo TipoCliente
+ *
+ * Representa las categorías de clientes disponibles en el sistema.
+ * Permite clasificar clientes según su naturaleza (Empresa, Startup, Particular, etc.)
+ *
+ * Relaciones:
+ * - Un TipoCliente puede tener muchos Clientes (hasMany)
+ */
+const TipoCliente = sequelize.define(
+  "TipoCliente",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -10,36 +19,18 @@ const Tarea = sequelize.define(
       autoIncrement: true,
     },
     nombre: {
-      type: DataTypes.STRING(150),
+      type: DataTypes.STRING(60),
       allowNull: false,
-    },
-    importancia: {
-      type: DataTypes.SMALLINT,
-    },
-    duracion_estimada: {
-      type: DataTypes.INTEGER,
+      unique: true,
     },
     descripcion: {
       type: DataTypes.TEXT,
     },
-    estado_id: {
-      type: DataTypes.INTEGER,
-    },
-    fecha_inicio: {
-      type: DataTypes.DATEONLY,
-    },
-    fecha_limite: {
-      type: DataTypes.DATEONLY,
-    },
-    proyecto_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
   },
   {
-    tableName: "tarea",
+    tableName: "tipo_cliente",
     timestamps: false,
   }
 )
 
-export default Tarea
+export default TipoCliente
