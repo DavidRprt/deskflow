@@ -225,20 +225,21 @@ Proyecto.hasMany(Tarea, {
 
 /**
  * Proyecto - Gasto (1:N)
- * Un proyecto puede tener múltiples gastos asociados
+ * Un proyecto puede tener múltiples registros de gastos asociados
+ * Nota: Se usa "registrosGastos" porque el modelo Proyecto ya tiene un campo "gastos" (DECIMAL)
  */
 Proyecto.hasMany(Gasto, {
   foreignKey: "proyecto_id",
-  as: "gastos",
+  as: "registrosGastos",
 })
 
 /**
  * Proyecto - Ingreso (1:N)
- * Un proyecto puede tener múltiples ingresos asociados
+ * Un proyecto puede tener múltiples registros de ingresos asociados
  */
 Proyecto.hasMany(Ingreso, {
   foreignKey: "proyecto_id",
-  as: "ingresos",
+  as: "registrosIngresos",
 })
 
 // ============================================
