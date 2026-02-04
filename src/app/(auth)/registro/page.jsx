@@ -3,35 +3,46 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { IconLoader2, IconMail, IconLock, IconUser } from "@tabler/icons-react"
+import { IconLoader2, IconMail, IconLock, IconUser, IconEye, IconEyeOff } from "@tabler/icons-react"
 import { registerAction } from "@/actions/authActions"
 
 export default function RegistroPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
 
-    const formData = new FormData(e.target)
+    try {
+      const formData = new FormData(e.currentTarget)
 
-    // Validar que las contraseñas coincidan
-    if (formData.get("password") !== formData.get("confirmPassword")) {
-      setError("Las contraseñas no coinciden")
-      setIsLoading(false)
-      return
-    }
+      const password = formData.get("password")
+      const confirmPassword = formData.get("confirmPassword")
 
-    const result = await registerAction(formData)
+      // Validar que las contraseñas coincidan
+      if (password !== confirmPassword) {
+        setError("Las contraseñas no coinciden")
+        setIsLoading(false)
+        return
+      }
 
-    if (result.success) {
-      router.push("/")
-      router.refresh()
-    } else {
-      setError(result.error)
+      const result = await registerAction(formData)
+
+      if (result.success) {
+        router.push("/")
+        router.refresh()
+      } else {
+        setError(result.error || "Error al crear la cuenta")
+        setIsLoading(false)
+      }
+    } catch (err) {
+      console.error("Register error:", err)
+      setError("Error inesperado. Intenta de nuevo.")
       setIsLoading(false)
     }
   }
@@ -105,14 +116,21 @@ export default function RegistroPage() {
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
               />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 required
                 minLength={6}
                 placeholder="Minimo 6 caracteres"
                 disabled={isLoading}
-                className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+                className="w-full pl-10 pr-12 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-heading transition"
+              >
+                {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+              </button>
             </div>
           </div>
 
@@ -126,14 +144,21 @@ export default function RegistroPage() {
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
               />
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 required
                 minLength={6}
                 placeholder="Repetir contrasena"
                 disabled={isLoading}
-                className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+                className="w-full pl-10 pr-12 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-heading transition"
+              >
+                {showConfirmPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+              </button>
             </div>
           </div>
 

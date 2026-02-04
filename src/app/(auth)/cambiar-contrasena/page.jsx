@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { IconLoader2, IconLock, IconArrowLeft, IconCheck } from "@tabler/icons-react"
+import { IconLoader2, IconLock, IconArrowLeft, IconCheck, IconEye, IconEyeOff } from "@tabler/icons-react"
 import { changePasswordAction } from "@/actions/authActions"
 
 export default function CambiarContrasenaPage() {
@@ -11,30 +11,41 @@ export default function CambiarContrasenaPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
 
-    const formData = new FormData(e.target)
+    try {
+      const formData = new FormData(e.currentTarget)
 
-    // Validar que las contraseñas coincidan
-    if (formData.get("newPassword") !== formData.get("confirmPassword")) {
-      setError("Las contraseñas nuevas no coinciden")
-      setIsLoading(false)
-      return
-    }
+      const newPassword = formData.get("newPassword")
+      const confirmPassword = formData.get("confirmPassword")
 
-    const result = await changePasswordAction(formData)
+      // Validar que las contraseñas coincidan
+      if (newPassword !== confirmPassword) {
+        setError("Las contraseñas nuevas no coinciden")
+        setIsLoading(false)
+        return
+      }
 
-    if (result.success) {
-      setSuccess(true)
-      setTimeout(() => {
-        router.push("/configuracion")
-      }, 2000)
-    } else {
-      setError(result.error)
+      const result = await changePasswordAction(formData)
+
+      if (result.success) {
+        setSuccess(true)
+        setTimeout(() => {
+          router.push("/configuracion")
+        }, 2000)
+      } else {
+        setError(result.error || "Error al cambiar la contraseña")
+      }
+    } catch (err) {
+      console.error("Change password error:", err)
+      setError("Error inesperado. Intenta de nuevo.")
     }
     setIsLoading(false)
   }
@@ -87,13 +98,20 @@ export default function CambiarContrasenaPage() {
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
                 />
                 <input
-                  type="password"
+                  type={showCurrentPassword ? "text" : "password"}
                   name="currentPassword"
                   required
                   placeholder="Tu contrasena actual"
                   disabled={isLoading}
-                  className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+                  className="w-full pl-10 pr-12 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-heading transition"
+                >
+                  {showCurrentPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                </button>
               </div>
             </div>
 
@@ -107,14 +125,21 @@ export default function CambiarContrasenaPage() {
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
                 />
                 <input
-                  type="password"
+                  type={showNewPassword ? "text" : "password"}
                   name="newPassword"
                   required
                   minLength={6}
                   placeholder="Minimo 6 caracteres"
                   disabled={isLoading}
-                  className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+                  className="w-full pl-10 pr-12 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-heading transition"
+                >
+                  {showNewPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                </button>
               </div>
             </div>
 
@@ -128,14 +153,21 @@ export default function CambiarContrasenaPage() {
                   className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
                 />
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
                   required
                   minLength={6}
                   placeholder="Repetir nueva contrasena"
                   disabled={isLoading}
-                  className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+                  className="w-full pl-10 pr-12 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-heading transition"
+                >
+                  {showConfirmPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                </button>
               </div>
             </div>
 

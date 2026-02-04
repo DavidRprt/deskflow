@@ -3,27 +3,34 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { IconLoader2, IconMail, IconLock } from "@tabler/icons-react"
+import { IconLoader2, IconMail, IconLock, IconEye, IconEyeOff } from "@tabler/icons-react"
 import { loginAction } from "@/actions/authActions"
 
 export default function LoginPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
 
-    const formData = new FormData(e.target)
-    const result = await loginAction(formData)
+    try {
+      const formData = new FormData(e.currentTarget)
+      const result = await loginAction(formData)
 
-    if (result.success) {
-      router.push("/")
-      router.refresh()
-    } else {
-      setError(result.error)
+      if (result.success) {
+        router.push("/")
+        router.refresh()
+      } else {
+        setError(result.error || "Error al iniciar sesión")
+        setIsLoading(false)
+      }
+    } catch (err) {
+      console.error("Login error:", err)
+      setError("Error inesperado. Intenta de nuevo.")
       setIsLoading(false)
     }
   }
@@ -77,13 +84,20 @@ export default function LoginPage() {
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
               />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 required
                 placeholder="Tu contrasena"
                 disabled={isLoading}
-                className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
+                className="w-full pl-10 pr-12 py-3 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-heading transition"
+              >
+                {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+              </button>
             </div>
           </div>
 
