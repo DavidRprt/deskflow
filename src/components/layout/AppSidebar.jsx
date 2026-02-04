@@ -15,13 +15,11 @@ import {
   IconUsersGroup,
   IconSun,
   IconMoon,
+  IconHome,
 } from "@tabler/icons-react"
+import { logoutAction } from "@/actions/authActions"
 
-export default function AppSidebar() {
-  const user = {
-    name: "David Rapoport",
-  }
-
+export default function AppSidebar({ user }) {
   const [isDark, setIsDark] = useState(false)
 
   useEffect(() => {
@@ -33,6 +31,10 @@ export default function AppSidebar() {
     }
   }, [isDark])
 
+  const handleLogout = async () => {
+    await logoutAction()
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Sidebar>
@@ -41,6 +43,18 @@ export default function AppSidebar() {
             <TopBar isDark={isDark} setIsDark={setIsDark} />
 
             <div className="mt-8 flex flex-col gap-2 px-2">
+              <SidebarLink
+                link={{
+                  href: "/",
+                  label: "Dashboard",
+                  icon: (
+                    <IconHome
+                      size={18}
+                      className="text-primary dark:text-primary"
+                    />
+                  ),
+                }}
+              />
               <SidebarLink
                 link={{
                   href: "/proyectos",
@@ -80,7 +94,7 @@ export default function AppSidebar() {
               <SidebarLink
                 link={{
                   href: "/configuracion",
-                  label: "Configuración",
+                  label: "Configuracion",
                   icon: (
                     <IconSettings
                       size={18}
@@ -95,29 +109,22 @@ export default function AppSidebar() {
           <div className="flex flex-col gap-2 px-2 pb-4">
             <SidebarLink
               link={{
-                href: "#",
-                label: user.name,
+                href: "/configuracion",
+                label: user?.nombre || user?.persona?.nombre || "Usuario",
                 icon: (
-                  <img
-                    src="/perfil.jpeg"
-                    className="h-7 w-7 rounded-full"
-                    alt="Avatar"
-                  />
+                  <div className="h-7 w-7 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xs font-bold">
+                    {(user?.nombre || user?.persona?.nombre || "U")[0].toUpperCase()}
+                  </div>
                 ),
               }}
             />
-            <SidebarLink
-              link={{
-                href: "#",
-                label: "Cerrar sesión",
-                icon: (
-                  <IconLogout
-                    size={18}
-                    className="text-primary dark:text-primary"
-                  />
-                ),
-              }}
-            />
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted hover:bg-secondary hover:text-heading transition w-full text-left"
+            >
+              <IconLogout size={18} className="text-primary" />
+              <span className="text-sm">Cerrar sesion</span>
+            </button>
           </div>
         </SidebarBody>
       </Sidebar>
