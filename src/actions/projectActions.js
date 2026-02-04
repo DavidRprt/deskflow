@@ -5,6 +5,9 @@ import {
   createProject,
   toggleArchivar,
   toggleFijar,
+  getProjectById,
+  updateProject,
+  deleteProject,
 } from "@/services/projects/projectService"
 
 export async function createProjectAction(formData) {
@@ -49,6 +52,50 @@ export async function toggleFijarAction(projectId) {
   try {
     await toggleFijar(projectId)
     revalidatePath("/proyectos")
+    return { success: true }
+  } catch (error) {
+    return { success: false, error: error.message }
+  }
+}
+
+export async function getProjectAction(projectId) {
+  try {
+    const personaId = 1
+    const project = await getProjectById(projectId, personaId)
+
+    if (!project) {
+      return { success: false, error: "Proyecto no encontrado" }
+    }
+
+    return { success: true, data: project }
+  } catch (error) {
+    return { success: false, error: error.message }
+  }
+}
+
+export async function updateProjectAction(projectId, data) {
+  try {
+    const personaId = 1
+    const project = await updateProject(projectId, data, personaId)
+
+    revalidatePath("/proyectos")
+    revalidatePath(`/proyectos/${projectId}`)
+    revalidatePath("/")
+
+    return { success: true, data: project }
+  } catch (error) {
+    return { success: false, error: error.message }
+  }
+}
+
+export async function deleteProjectAction(projectId) {
+  try {
+    const personaId = 1
+    await deleteProject(projectId, personaId)
+
+    revalidatePath("/proyectos")
+    revalidatePath("/")
+
     return { success: true }
   } catch (error) {
     return { success: false, error: error.message }
