@@ -67,7 +67,7 @@ export default function AppSidebar() {
               />
               <SidebarLink
                 link={{
-                  href: "/finances",
+                  href: "/finanzas",
                   label: "Finanzas",
                   icon: (
                     <IconCurrencyDollar
@@ -79,7 +79,7 @@ export default function AppSidebar() {
               />
               <SidebarLink
                 link={{
-                  href: "/settings",
+                  href: "/configuracion",
                   label: "Configuración",
                   icon: (
                     <IconSettings
