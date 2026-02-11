@@ -28,6 +28,7 @@ export async function updateProfileAction(formData) {
     const data = {
       nombre: formData.get("nombre"),
       idioma_preferido: formData.get("idioma_preferido") || null,
+      fecha_nacimiento: formData.get("fecha_nacimiento") || null,
       profesion_id: formData.get("profesion_id")
         ? parseInt(formData.get("profesion_id"))
         : null,
@@ -35,6 +36,12 @@ export async function updateProfileAction(formData) {
       tema_preferido_id: formData.get("tema_preferido_id")
         ? parseInt(formData.get("tema_preferido_id"))
         : null,
+    }
+
+    // Manejar avatar (viene como Base64 string)
+    const avatarData = formData.get("avatar")
+    if (avatarData && avatarData !== "null" && avatarData !== "") {
+      data.avatar = avatarData
     }
 
     const profile = await updateProfile(personaId, data)

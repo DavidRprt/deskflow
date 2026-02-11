@@ -1,4 +1,4 @@
-import { Proyecto, Cliente, TipoProyecto, Estado, Tarea } from "@/models"
+import { Proyecto, Cliente, TipoProyecto, Estado, Tarea, Gasto, Moneda } from "@/models"
 
 export async function getProjects(personaId = 1) {
   try {
@@ -165,10 +165,31 @@ export async function getProjectById(projectId, personaId = 1) {
             },
           ],
         },
+        {
+          model: Gasto,
+          as: "registrosGastos",
+          attributes: ["id", "monto", "fecha", "descripcion", "es_deducible", "moneda_id"],
+          required: false,
+          include: [
+            {
+              model: Moneda,
+              as: "moneda",
+              attributes: ["id", "codigo", "nombre", "simbolo"],
+              required: false,
+            },
+          ],
+        },
       ],
     })
 
-    return project ? project.toJSON() : null
+    if (!project) return null
+
+    // Transformar el resultado para usar "gastos" en lugar de "registrosGastos"
+    const json = project.toJSON()
+    json.gastos = json.registrosGastos || []
+    delete json.registrosGastos
+
+    return json
   } catch (error) {
     console.error("Error fetching project:", error)
     throw new Error("Failed to fetch project")

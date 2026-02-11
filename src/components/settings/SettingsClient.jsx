@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import {
   IconUser,
@@ -9,6 +9,9 @@ import {
   IconChartBar,
   IconLoader2,
   IconCheck,
+  IconCamera,
+  IconX,
+  IconCalendar,
 } from "@tabler/icons-react"
 import { updateProfileAction } from "@/actions/settingsActions"
 
@@ -17,6 +20,7 @@ export default function SettingsClient({ profile, profesiones, temas, stats }) {
   const [activeTab, setActiveTab] = useState("perfil")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [avatarBase64, setAvatarBase64] = useState(profile.avatar || null)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -24,6 +28,12 @@ export default function SettingsClient({ profile, profesiones, temas, stats }) {
     setSuccess(false)
 
     const formData = new FormData(e.target)
+
+    // Agregar avatar como Base64
+    if (avatarBase64) {
+      formData.set("avatar", avatarBase64)
+    }
+
     const result = await updateProfileAction(formData)
 
     if (result.success) {
@@ -73,7 +83,11 @@ export default function SettingsClient({ profile, profesiones, temas, stats }) {
         <div className="lg:col-span-3">
           <form onSubmit={handleSubmit}>
             {activeTab === "perfil" && (
-              <ProfileTab profile={profile} />
+              <ProfileTab
+                profile={profile}
+                avatarBase64={avatarBase64}
+                setAvatarBase64={setAvatarBase64}
+              />
             )}
 
             {activeTab === "profesion" && (
@@ -133,7 +147,47 @@ function NavItem({ icon, label, active, onClick }) {
   )
 }
 
-function ProfileTab({ profile }) {
+function ProfileTab({ profile, avatarBase64, setAvatarBase64 }) {
+  const fileInputRef = useRef(null)
+  const [isLoadingImage, setIsLoadingImage] = useState(false)
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validar tipo de archivo
+    if (!file.type.startsWith("image/")) {
+      alert("Por favor selecciona una imagen")
+      return
+    }
+
+    // Validar tamaño (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      alert("La imagen no debe superar 2MB")
+      return
+    }
+
+    setIsLoadingImage(true)
+
+    try {
+      // Redimensionar y comprimir imagen
+      const base64 = await resizeAndCompressImage(file, 200, 200, 0.8)
+      setAvatarBase64(base64)
+    } catch (error) {
+      console.error("Error processing image:", error)
+      alert("Error al procesar la imagen")
+    } finally {
+      setIsLoadingImage(false)
+    }
+  }
+
+  const handleRemoveAvatar = () => {
+    setAvatarBase64(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
+  }
+
   return (
     <div className="bg-card border border-border rounded-xl p-6">
       <h2 className="text-lg font-semibold text-heading mb-6">
@@ -141,15 +195,65 @@ function ProfileTab({ profile }) {
       </h2>
 
       <div className="space-y-6">
+        {/* Avatar */}
         <div className="flex items-center gap-6">
-          <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-2xl font-bold text-primary">
-            {profile.nombre?.[0]?.toUpperCase() || "U"}
+          <div className="relative group">
+            {avatarBase64 ? (
+              <img
+                src={avatarBase64}
+                alt="Avatar"
+                className="w-24 h-24 rounded-full object-cover border-4 border-primary/20"
+              />
+            ) : (
+              <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center text-3xl font-bold text-primary border-4 border-primary/10">
+                {profile.nombre?.[0]?.toUpperCase() || "U"}
+              </div>
+            )}
+
+            {/* Overlay de cambiar foto */}
+            <div
+              className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {isLoadingImage ? (
+                <IconLoader2 size={24} className="text-white animate-spin" />
+              ) : (
+                <IconCamera size={24} className="text-white" />
+              )}
+            </div>
+
+            {/* Boton eliminar */}
+            {avatarBase64 && (
+              <button
+                type="button"
+                onClick={handleRemoveAvatar}
+                className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition"
+              >
+                <IconX size={14} />
+              </button>
+            )}
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
           </div>
+
           <div>
             <p className="font-medium text-heading">{profile.nombre}</p>
-            <p className="text-sm text-muted">
+            <p className="text-sm text-muted mb-2">
               {profile.profesion?.nombre || "Sin profesion definida"}
             </p>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="text-xs text-primary hover:underline"
+            >
+              Cambiar foto de perfil
+            </button>
           </div>
         </div>
 
@@ -175,10 +279,27 @@ function ProfileTab({ profile }) {
               defaultValue={profile.idioma_preferido || "es"}
               className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <option value="es">Español</option>
+              <option value="es">Espanol</option>
               <option value="en">English</option>
               <option value="pt">Portugues</option>
             </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-heading mb-2 flex items-center gap-2">
+              <IconCalendar size={16} />
+              Fecha de nacimiento
+            </label>
+            <input
+              type="date"
+              name="fecha_nacimiento"
+              defaultValue={profile.fecha_nacimiento || ""}
+              className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            {profile.fecha_nacimiento && (
+              <p className="text-xs text-muted mt-1">
+                {calcularEdad(profile.fecha_nacimiento)} años
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -352,4 +473,63 @@ function StatCard({ label, value, icon }) {
       <p className="text-sm text-muted">{label}</p>
     </div>
   )
+}
+
+// ==================== UTILS ====================
+
+/**
+ * Redimensiona y comprime una imagen a Base64
+ */
+function resizeAndCompressImage(file, maxWidth, maxHeight, quality) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement("canvas")
+        let { width, height } = img
+
+        // Calcular nuevas dimensiones manteniendo aspecto
+        if (width > height) {
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width
+            width = maxWidth
+          }
+        } else {
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height
+            height = maxHeight
+          }
+        }
+
+        canvas.width = width
+        canvas.height = height
+
+        const ctx = canvas.getContext("2d")
+        ctx.drawImage(img, 0, 0, width, height)
+
+        // Convertir a Base64 con compresion
+        const base64 = canvas.toDataURL("image/jpeg", quality)
+        resolve(base64)
+      }
+      img.onerror = reject
+      img.src = e.target.result
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
+
+/**
+ * Calcula la edad a partir de fecha de nacimiento
+ */
+function calcularEdad(fechaNacimiento) {
+  const hoy = new Date()
+  const nacimiento = new Date(fechaNacimiento)
+  let edad = hoy.getFullYear() - nacimiento.getFullYear()
+  const mes = hoy.getMonth() - nacimiento.getMonth()
+  if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+    edad--
+  }
+  return edad
 }

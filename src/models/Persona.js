@@ -29,7 +29,7 @@ const Persona = sequelize.define(
       allowNull: false,
     },
     avatar: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.TEXT, // Base64 encoded image
     },
     fecha_nacimiento: {
       type: DataTypes.DATEONLY,
